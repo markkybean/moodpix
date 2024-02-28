@@ -11,7 +11,7 @@
                 <div class="card-body p-5">
                     <form action=" {{ route('createpost') }} " method="POST">
                     @csrf
-                        <input class="form-control" type="text" placeholder="Share your current mood in just one Pix!">
+                        <input name="content" class="form-control" type="text" placeholder="Share your current mood in just one Pix!">
                         <button type="submit" class="btn btn-dark mt-2 float-end">Share Mood</button>
                     </form>
                 </div>
@@ -21,13 +21,18 @@
 
     <!-- Posts -->
 
+    @foreach ($posts as $post)
     <div class="mt-5 row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body p-4">
-                    <span class="fw-bold">Mark Santos <button class="float-end btn btn-secondary btn-sm" href="#">Delete</button></span>
-                    <br><small>a few minutes ago</small>
-                    <p class="mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias similique ad voluptatibus soluta rem sit laudantium hic tempore nam excepturi, tempora iusto, reiciendis nihil, id minus unde! Quo, vel iure?</p>
+                    <span class="fw-bold">{{ $post->user->name }}
+                        @if($post->user->id==Auth::user()->id)
+                        <a href="{{ route('deletepost', $post->id) }}" class="float-end btn btn-secondary btn-sm" href="#">Delete</a>
+                        @endif
+                    </span>
+                        <br><small>{{ $post->created_at->diffForHumans() }}</small>
+                    <p class="mt-3">{{ $post->content }}</p>
 
                     <div class="card mb-3">
                         <div class="card-body">
@@ -52,6 +57,7 @@
             </div>
         </div>
     </div>
+    @endforeach
 
 </div>
 @endsection
