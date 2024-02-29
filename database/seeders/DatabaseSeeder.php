@@ -24,6 +24,14 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        for($i=0; $i<5; $i++){
+
+            \App\Models\Post::create([
+                'content' => fake()->realText(),
+                'user_id' => fake()->randomDigit() + 1,
+            ]);
+        }
+
        
     }
 }

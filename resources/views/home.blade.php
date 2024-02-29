@@ -11,7 +11,7 @@
                 <div class="card-body p-5">
                     <form action=" {{ route('createpost') }} " method="POST">
                     @csrf
-                        <input name="content" class="form-control" type="text" placeholder="Share your current mood in just one Pix!">
+                        <input name="content" class="form-control" type="text" required placeholder="Share your current mood in just one Pix!">
                         <button type="submit" class="btn btn-dark mt-2 float-end">Share Mood</button>
                     </form>
                 </div>
@@ -34,25 +34,33 @@
                         <br><small>{{ $post->created_at->diffForHumans() }}</small>
                     <p class="mt-3">{{ $post->content }}</p>
 
+                    <!-- comments -->
+
                     <div class="card mb-3">
                         <div class="card-body">
-                            <input class="form-control" type="text" placeholder="Write a comment">
-                            <button class="btn btn-dark btn-sm mt-2 float-end">Submit</button>
+                            <form action=" {{ route('createcomment') }}" method="POST">
+                                @csrf
+                                <input name="content" class="form-control" type="text" placeholder="Write a comment" required>
+                                <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                <button type="submit" class="btn btn-dark btn-sm mt-2 float-end">Submit</button>
+                            </form>
                         </div>
                     </div>
+
+                    @foreach($post->comments->reverse() as $comment)
+
+                    <div class="mt-2 card px-3 py-1" style="font-size: 12px;">                      
+                        <span class="fw-bold mt-2">{{ $comment->user->name }}</span>
+                        <small>{{ $post->created_at->diffForHumans() }}</small>
+                        <p>{{$comment->content}}</p>
+                    </div>
+
+                    @endforeach
                  
 
-                    <!-- comments -->
-                    <div class="mt-2 card px-3 py-1" style="font-size: 12px;">                      
-                        <span class="fw-bold mt-2">Mark Santos</span>
-                        <small>a few minutes ago</small>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias similique ad voluptatibus soluta rem sit laudantium hic tempore nam excepturi, tempora iusto, reiciendis nihil, id minus unde! Quo, vel iure?</p>
-                    </div>
-                    <div class="mt-2 card px-3 py-1" style="font-size: 12px;">                      
-                        <span class="fw-bold mt-2">Mark Santos</span>
-                        <small>a few minutes ago</small>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias similique ad voluptatibus soluta rem sit laudantium hic tempore nam excepturi, tempora iusto, reiciendis nihil, id minus unde! Quo, vel iure?</p>
-                    </div>
+                    
+                   
+                    
                 </div>
             </div>
         </div>
